@@ -14,6 +14,21 @@ body {
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: $color-primary;
+    // background-color: $color-primary;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    &.align-right {
+        justify-content: flex-end;
+    }
+    &.wrap {
+        flex-wrap: wrap;
+    }
+}
+
+.content {
+    margin: 1em auto;
+    width: 70%;
+}

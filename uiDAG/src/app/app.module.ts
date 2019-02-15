@@ -1,3 +1,4 @@
+import { PartTableModule } from './part-table/part-table.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,7 +14,8 @@ import { ToolbarModule } from './toolbar/toolbar.module';
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    ToolbarModule
+    ToolbarModule,
+    PartTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
