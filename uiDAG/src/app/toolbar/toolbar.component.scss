@@ -1,0 +1,36 @@
+@import '../../theme_spec.scss';
+
+mat-toolbar {
+    z-index: 9;
+    background-color: $color-primary;
+    color: $color-accent-alt;
+    box-shadow: 0px 0px 20px 0px black;
+    position: relative;
+    mat-toolbar-row {
+        display: inline-flex;
+        vertical-align: middle;
+        width: 100%;
+        img {
+            outline: none;
+        }
+        .nav-item {
+            button {
+                font-size: 20px;
+                min-width: 100px;
+            }
+            &.right {
+                display: flex;
+                margin-left: auto;
+                button {
+                    min-width: 0px;
+                }
+                @media only screen and (max-width: 650px) {
+                    display: none;
+                }
+            }
+            @media only screen and (max-width: 650px) {
+                display: none;
+            }
+        }
+    }
+}
