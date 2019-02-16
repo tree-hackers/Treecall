@@ -1,9 +1,9 @@
 web3j:
   client-address: http://localhost:9545
   http-timeout-seconds: 600
-privatekey: 9a5711d5335f1bf0cf88625438dfb07af79ad0aa7d22fec551818788d67f2a4a
 gaslimit: 4700000
-
+---
+privatekey: 9a5711d5335f1bf0cf88625438dfb07af79ad0aa7d22fec551818788d67f2a4a
 server:
   port: 8080
 spring:
