@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PartTableService } from './part-table.service';
+import { HttpService } from './http.service';
 
-describe('PartTableService', () => {
+describe('HttpService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PartTableService = TestBed.get(PartTableService);
+    const service: HttpService = TestBed.get(HttpService);
     expect(service).toBeTruthy();
   });
 });

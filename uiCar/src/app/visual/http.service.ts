@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
-import {iPart } from './iPart';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { iPart } from './iPart';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class PartTableService {
+export class HttpService {
 
   url = environment.apiServer.url;
 
@@ -17,10 +18,6 @@ export class PartTableService {
 
   getParts(): Observable<any> {
     return this._http.get(this.url);
-  }
-
-  setBroken(part): Observable<any> {
-    return this._http.post<any>(this.url + '/set-broken/' + part, '');
   }
 
   parsePart(json: any): iPart {
@@ -36,5 +33,4 @@ export class PartTableService {
     }
     return parts;
   }
-
 }

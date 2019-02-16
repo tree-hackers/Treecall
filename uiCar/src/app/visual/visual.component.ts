@@ -1,3 +1,5 @@
+import { HttpService } from './http.service';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +8,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./visual.component.scss']
 })
 export class VisualComponent implements OnInit {
-  part="headlights";
-  constructor() { }
+  part;
+  constructor(
+    private _httpService: HttpService
+  ) {
+    setInterval(() => this.refreshData(), 5000);
+  }
 
   ngOnInit() {
   }
 
+  refreshData() {
+    this._httpService.getParts().subscribe((res) => {
+      for (let i = 0; i < res.length; i++) {
+        if (res[i].isBroken) {
+          this.part = res[i].name;
+        }
+      }
+    });
+  }
 }
