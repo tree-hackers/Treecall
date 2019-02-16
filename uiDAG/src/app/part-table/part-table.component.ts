@@ -1,5 +1,6 @@
+import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 
 
 
@@ -32,17 +33,36 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class PartTableComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
-  constructor() { }
+  constructor(
+    public dialog: MatDialog
+  ) { }
 
   @ViewChild(MatSort) sort: MatSort;
-  
+
   ngOnInit() {
     this.dataSource.sort = this.sort;
   }
 
-    applyFilter(filterValue: string) {
+  applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+  }
+
+  click(data) {
+    this.openDialog(data);
+  }
+
+  openDialog(data): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: { data }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('do something backendy here');
+      }
+    });
   }
 }
