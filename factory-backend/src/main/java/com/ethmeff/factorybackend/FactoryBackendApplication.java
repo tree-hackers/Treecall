@@ -2,6 +2,7 @@ package com.ethmeff.factorybackend;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
-import com.ethmeff.factorybackend.blockchain.connector.impl.eth.EthBCConnector;
 import com.ethmeff.factorybackend.model.Part;
 import com.ethmeff.factorybackend.repository.PartRepository;
 
@@ -22,31 +22,31 @@ public class FactoryBackendApplication {
 		SpringApplication.run(FactoryBackendApplication.class, args);
 	}
 
-	@Bean
-	public BCConnector bcConnector() {
-		return new EthBCConnector();
-	}
-
 	@Autowired
 	private PartRepository repo;
+	@Autowired
+	private BCConnector bcConnector;
 
 	@Bean
 	@Profile("daimler")
 	public CommandLineRunner demoDataDAG() {
 		return args -> {
-			repo.saveAll(Arrays.asList(new Part("Headligths", new BigInteger("1"), "", "", false),
-					new Part("Breaks", new BigInteger("4"), "", "", false),
-					new Part("Engine", new BigInteger("101"), "", "", false),
-					new Part("Airbags", new BigInteger("20234"), "", "", false),
-					new Part("Headlight", new BigInteger("733"), "", "", false),
-					new Part("Breaks", new BigInteger("785"), "", "", false),
-					new Part("Engine", new BigInteger("3457"), "", "", false),
-					new Part("Airbags", new BigInteger("68"), "", "", false),
-					new Part("Headlight", new BigInteger("861"), "", "", false),
-					new Part("Breaks", new BigInteger("995"), "", "", false),
-					new Part("Engine", new BigInteger("567"), "", "", false),
-					new Part("Airbags", new BigInteger("987"), "", "", false),
-					new Part("Headlight", new BigInteger("94"), "", "", false)));
+			String address = bcConnector.deploy();
+			List<Part> asList = Arrays.asList(new Part("Headlights", new BigInteger("1"), address, "", false),
+					new Part("Breaks", new BigInteger("4"), address, "", false),
+					new Part("Engine", new BigInteger("101"), address, "", false),
+					new Part("Airbags", new BigInteger("20234"), address, "", false),
+					new Part("Headlight", new BigInteger("733"), address, "", false),
+					new Part("Breaks", new BigInteger("785"), address, "", false),
+					new Part("Engine", new BigInteger("3457"), address, "", false),
+					new Part("Airbags", new BigInteger("68"), address, "", false),
+					new Part("Headlight", new BigInteger("861"), address, "", false),
+					new Part("Breaks", new BigInteger("995"), address, "", false),
+					new Part("Engine", new BigInteger("567"), address, "", false),
+					new Part("Airbags", new BigInteger("987"), address, "", false),
+					new Part("Headlight", new BigInteger("94"), address, "", false));
+			bcConnector.addParts(asList);
+			repo.saveAll(asList);
 		};
 	}
 
@@ -54,10 +54,13 @@ public class FactoryBackendApplication {
 	@Profile("zf")
 	public CommandLineRunner demoDataZF() {
 		return args -> {
-			repo.saveAll(Arrays.asList(new Part("Headligths", new BigInteger("1"), "", "", false),
+			List<Part> asList = Arrays.asList(new Part("Headlights", new BigInteger("1"), "", "", false),
 					new Part("Break Disc", new BigInteger("7"), "", "", false),
 					new Part("Break Pads", new BigInteger("23"), "", "", false),
-					new Part("Break Pipes", new BigInteger("3"), "", "", false)));
+					new Part("Break Pipes", new BigInteger("3"), "", "", false));
+			bcConnector.addParts(asList);
+			repo.saveAll(asList);
 		};
 	}
+
 }

@@ -41,7 +41,8 @@ public class EthBCConnector implements BCConnector {
 		FactoryParts foundParts = null;
 		for (Part part : parts) {
 			String savedContractAddress = part.getContractAddress();
-			if (!contractAddress.equalsIgnoreCase(savedContractAddress)) {
+			if (!contractAddress.equalsIgnoreCase(savedContractAddress) || savedContractAddress == null
+					|| savedContractAddress.isEmpty()) {
 				contractAddress = savedContractAddress;
 				foundParts = findFactoryPartsByAddress(contractAddress);
 			}
