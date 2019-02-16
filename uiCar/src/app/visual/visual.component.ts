@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./visual.component.scss']
 })
 export class VisualComponent implements OnInit {
-
+  part="headlights";
   constructor() { }
 
   ngOnInit() {

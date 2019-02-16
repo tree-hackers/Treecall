@@ -1,1 +1,39 @@
-<img class="image" src="/assets/car_back.png" alt="car">
+<div class="content">
+    <div class="message">
+        <span [ngSwitch]="part">
+            <div *ngSwitchCase="'car_headlights'">
+                One of your headlights seems to have a problem, please visit a workshop soon!
+            </div>
+            <div *ngSwitchCase="'break'">
+                One of your breaks seems to have a problem, please visit a workshop soon!
+            </div>
+            <div *ngSwitchCase="'airbags'">
+                Your front airbags seems to have a problem, please visit a workshop soon!
+            </div>
+            <div *ngSwitchCase="'engine'">
+                Your engine seems to have a problem, please visit a workshop soon!
+            </div>
+            <div *ngSwitchDefault>
+                Have a nice ride
+            </div>
+        </span>
+    </div>
+
+    <span [ngSwitch]="part">
+        <div *ngSwitchCase="'headlights'">
+            <img class="image" src="/assets/car_headlights.png">
+        </div>
+        <div *ngSwitchCase="'break'">
+            <img class="image" src="/assets/car_break.png">
+        </div>
+        <div *ngSwitchCase="'airbags'">
+            <img class="image" src="/assets/car_airbags.png">
+        </div>
+        <div *ngSwitchCase="'engine'">
+            <img class="image" src="/assets/car_engine.png">
+        </div>
+        <div *ngSwitchDefault>
+            <img class="image" src="/assets/car_front.png">
+        </div>
+    </span>
+</div>
