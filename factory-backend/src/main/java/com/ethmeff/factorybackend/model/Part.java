@@ -1,29 +1,44 @@
 package com.ethmeff.factorybackend.model;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties
 public class Part {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private int batch;
+	private BigInteger batch;
 	private String contractAddress;
 	private String partId;
 	private Boolean isBroken;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SubPart> subParts = Arrays.asList(new SubPart("123123", UUID.randomUUID()));
 
 	public Part() {
 	}
 
-	public Part(String name, int batch, String contractAddress, String partId, Boolean isBroken) {
+	public Part(String name, BigInteger batch, String contractAddress, String partId, Boolean isBroken) {
 		this.name = name;
 		this.batch = batch;
 		this.contractAddress = contractAddress;
-		this.partId = partId;
+		this.partId = partId == null || partId.isEmpty() ? UUID.randomUUID().toString() : partId;
 		this.isBroken = isBroken;
 	}
 
@@ -43,11 +58,11 @@ public class Part {
 		this.name = name;
 	}
 
-	public int getBatch() {
+	public BigInteger getBatch() {
 		return batch;
 	}
 
-	public void setBatch(int batch) {
+	public void setBatch(BigInteger batch) {
 		this.batch = batch;
 	}
 
@@ -75,4 +90,30 @@ public class Part {
 		this.isBroken = isBroken;
 	}
 
+	public List<SubPart> getSubParts() {
+		return subParts;
+	}
+
+	@JsonIgnore
+	public List<String> getSubPartListAsString() {
+		if (!subParts.isEmpty()) {
+			List<String> result = new ArrayList<>();
+			for (SubPart subPart : subParts) {
+				result.add(subPart.toString());
+			}
+			return result;
+		} else {
+			return Collections.<String>emptyList();
+		}
+	}
+
+	public void setSubParts(List<SubPart> subParts) {
+		this.subParts = subParts;
+	}
+
+	@Override
+	public String toString() {
+		return "Part [id=" + id + ", name=" + name + ", batch=" + batch + ", contractAddress=" + contractAddress
+				+ ", partId=" + partId + ", isBroken=" + isBroken + ", subParts=" + subParts + "]";
+	}
 }

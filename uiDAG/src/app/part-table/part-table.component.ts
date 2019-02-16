@@ -1,7 +1,7 @@
 import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
-
+import { PartTableService } from './part-table.service';
 
 @Component({
   selector: 'app-part-table',
@@ -10,11 +10,15 @@ import { MatSort, MatPaginator, MatTableDataSource, MatDialog } from '@angular/m
 })
 
 export class PartTableComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'batch', 'partID', 'broken'];
+  displayedColumns: string[] = ['id', 'name', 'batch'];
   dataSource;
   constructor(
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private _partTableService: PartTableService
+  ) {
+    this.fillTable();
+    setInterval(() => this.fillTable(), 5000);
+  }
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -40,12 +44,17 @@ export class PartTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('do something backendy here');
+        this._partTableService.setBroken(result.val.id).subscribe((res) => {
+          console.log(res);
+
+        });
       }
     });
   }
 
   fillTable() {
-    this.dataSource;
+    this._partTableService.getParts().subscribe((res) => {
+      this.dataSource = new MatTableDataSource(this._partTableService.convertParts(res));
+    });
   }
 }
