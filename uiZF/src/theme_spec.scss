@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+
+$typography: mat-typography-config(
+  $font-family: '"Work Sans", sans-serif;',
+  $display-1: mat-typography-level(48px, 53px, 700),
+  $display-2: mat-typography-level(36px, 41px, 700),
+  $display-3: mat-typography-level(24px, 29px, 700),
+  $display-4: mat-typography-level(24px, 29px, 700),
+  $headline: mat-typography-level(24px, 29px, 700),
+  $title: mat-typography-level(24px, 29px, 500),
+  $subheading-1: mat-typography-level(16.5px, 21.5px, 700),
+  $subheading-2: mat-typography-level(16.5px, 21.5px, 700),
+  $body-1: mat-typography-level(14px, 19px, 500),
+  $body-2: mat-typography-level(14px, 19px, 700),
+  $caption: mat-typography-level(12px, 17px, 500)
+);
+
+$color-primary: rgb(49, 49, 49);
+$color-accent: rgb(64, 194, 177);
+$color-accent-alt: rgb(255, 255, 255);
+$color-accent-alt2: rgb(148, 62, 76);
+
+$color-success: rgb(55, 195, 145);
+$color-error: rgb(235, 75, 80);
+$color-warn: rgb(255, 215, 25);
