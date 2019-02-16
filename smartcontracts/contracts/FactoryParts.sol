@@ -1,4 +1,5 @@
 pragma solidity >=0.4.22 <0.6.0;
+pragma experimental ABIEncoderV2; // cannot return variable length objects or structs without this, remove when no longer experimental
 
 contract FactoryParts {
     struct PartElement {
@@ -7,7 +8,7 @@ contract FactoryParts {
         string partId;
         address owner;
         bool recalled;
-        string previousIds;
+        string[] previousIds;
     }
     mapping (string => PartElement) private partsList;
 
@@ -20,7 +21,7 @@ contract FactoryParts {
 
     }
 
-    function storePart(string memory _id, string memory _name, int _batch, string memory _partId, address _owner, string memory _previousIds) 
+    function storePart(string memory _id, string memory _name, int _batch, string memory _partId, address _owner, string[] memory _previousIds) 
                             public returns(bool success) {      
         PartElement memory part = partsList[_id];
 
@@ -43,7 +44,7 @@ contract FactoryParts {
         return true;
     }
 
-    function getPart(string memory _id) public view returns (string memory, int, string memory, address, bool, string memory) {
+    function getPart(string memory _id) public view returns (string memory, int, string memory, address, bool, string[] memory) {
         PartElement memory part = partsList[_id];
         return (part.name, part.batch, part.partId, part.owner, part.recalled, part.previousIds);
     }
