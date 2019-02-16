@@ -1,6 +1,7 @@
 package com.ethmeff.factorybackend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,13 @@ public class PartController {
 		return ResponseEntity.ok(service.setBroken(id));
 	}
 
-	@GetMapping
+	@PutMapping(path = "/change-owner")
+	public ResponseEntity<Boolean> changeOwner(@RequestBody Map<Part, String> parts) throws Exception {
+		return ResponseEntity.accepted().body(service.changeOwner(parts));
+
+	}
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Part>> getOwnParts() {
 		return ResponseEntity.ok(service.getAllParts());
 	}
