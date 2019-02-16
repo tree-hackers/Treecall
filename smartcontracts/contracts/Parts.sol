@@ -17,4 +17,19 @@ contract Parts {
 
     }
 
+    function storePart(string memory _id, address _owner, string memory _previousIds) 
+                            public returns(bool success) {      
+        PartElement memory part = partsList[_id];
+
+        part.owner = _owner;
+        part.previousIds = _previousIds;
+        part.recalled = false;
+
+        partsList[_id] = part;
+        return true;
+    }
+
+    function isRecalled(string memory _id) public view returns (bool) {
+        return partsList[_id].recalled;
+    }
 }
