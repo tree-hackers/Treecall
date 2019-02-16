@@ -1,3 +1,4 @@
+const truffleAssert = require('truffle-assertions');
 var factoryParts = artifacts.require("../contracts/FactoryParts.sol");
 
 contract('FactoryParts', function(accounts) {
@@ -33,8 +34,12 @@ contract('FactoryParts', function(accounts) {
                 return instance.getPart(id).then(function(retrievedPart){
                     assert(!retrievedPart[4]);
                     
-                    return instance.markAsRecalled(id).then(function(value) {
-                        assert(value);
+                    return instance.markAsRecalled(id).then(function(result) {
+                        assert(result);
+
+                        truffleAssert.eventEmitted(result, 'MarkedAsRecalled', (ev) => {
+                            return ev[0] === id && ev[1] === accounts[0];
+                        });
 
                         return instance.getPart(id).then(function(retrievedPartAgain){
                             assert(!retrievedPartAgain[4]);
