@@ -9,7 +9,8 @@ contract FactoryParts {
         int batch;
         address owner;
         bool recalled;
-        string[] previousIds;
+        address[] subContracts;
+        string[] subIds;
     }
     mapping (string => PartElement) private partsList;
 
@@ -28,14 +29,15 @@ contract FactoryParts {
         factoryOwner = msg.sender;
     }
 
-    function storePart(string memory _id, string memory _name, int _batch, string[] memory _previousIds) 
+    function storePart(string memory _id, string memory _name, int _batch, address[] memory _subContracts, string[] memory _subIds) 
                             public onlyOwner returns(bool success) {      
         PartElement memory part = partsList[_id];
 
         part.name = _name;
         part.batch = _batch;
         part.owner = msg.sender;
-        part.previousIds = _previousIds;
+        part.subContracts = _subContracts;
+        part.subIds = _subIds;
         part.recalled = false;
 
         partsList[_id] = part;
@@ -68,9 +70,9 @@ contract FactoryParts {
         return true;
     }
 
-    function getPart(string memory _id) public view returns (string memory, int, address, bool, string[] memory) {
+    function getPart(string memory _id) public view returns (string memory, int, address, bool, address[] memory, string[] memory) {
         PartElement memory part = partsList[_id];
-        return (part.name, part.batch, part.owner, part.recalled, part.previousIds);
+        return (part.name, part.batch, part.owner, part.recalled, part.subContracts, part.subIds);
     }
 
     modifier onlyOwner {

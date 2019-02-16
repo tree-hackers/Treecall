@@ -6,21 +6,44 @@ contract('FactoryParts', function(accounts) {
     var name = "airbag";
     var batch = "12345";
     var owner = accounts[0];
-    var parentId = ["be9a7977-8658-497e-aac0-0d8af4b1f606", "bd6bde1a-4d29-4fb8-9057-e792e74d85ab"]
+    var subContracts = [accounts[9], accounts[8]];
+    var subIds = ["be9a7977-8658-497e-aac0-0d8af4b1f606", "bd6bde1a-4d29-4fb8-9057-e792e74d85ab"];
 
     it("store and retrieve a part", function() {
         return factoryParts.new().then(function(instance) {
             return instance.getPart(id).then(function(retrievedPart){
                 assert.equal('', retrievedPart[0]);
             
-                return instance.storePart(id, name, batch, parentId).then(function(value){
+                return instance.storePart(id, name, batch, subContracts, subIds).then(function(value){
                     assert(value);
            
                     return instance.getPart(id).then(function(retrievedPartAgain){
                         assert.equal(owner, retrievedPartAgain[2]);
                         assert(!retrievedPartAgain[3]);
-                        assert.equal(retrievedPartAgain[4][0], parentId[0])
-                        assert.equal(retrievedPartAgain[4][1], parentId[1])
+                        assert.equal(retrievedPartAgain[4][0], subContracts[0])
+                        assert.equal(retrievedPartAgain[4][1], subContracts[1])
+                        assert.equal(retrievedPartAgain[5][0], subIds[0])
+                        assert.equal(retrievedPartAgain[5][1], subIds[1])
+                    });
+                });
+            });
+        });
+    });
+
+
+    it("store empty subContract list", function() {
+        return factoryParts.new().then(function(instance) {
+            return instance.getPart(id).then(function(retrievedPart){
+                assert.equal('', retrievedPart[0]);
+            
+                return instance.storePart(id, name, batch, [], []).then(function(value){
+                    assert(value);
+           
+                    return instance.getPart(id).then(function(retrievedPartAgain){
+                        assert.equal(owner, retrievedPartAgain[2]);
+                        assert(!retrievedPartAgain[3]);
+                        assert.equal(retrievedPartAgain[4].length, 0)
+                        assert.equal(retrievedPartAgain[5].length, 0)
                     });
                 });
             });
@@ -32,7 +55,7 @@ contract('FactoryParts', function(accounts) {
             return instance.getPart(id).then(function(retrievedPart){
                 assert.equal('', retrievedPart[0]);
             
-                return truffleAssert.reverts(instance.storePart(id, name, batch, parentId, { from: accounts[1] }), "Only factory owner can call this function.").then(function(value) { 
+                return truffleAssert.reverts(instance.storePart(id, name, batch, subContracts, subIds, { from: accounts[1] }), "Only factory owner can call this function.").then(function(value) { 
                     assert(!value);
            
                     return instance.getPart(id).then(function(retrievedPartAgain){
@@ -47,7 +70,7 @@ contract('FactoryParts', function(accounts) {
 
     it("mark part recalled", function() {
         return factoryParts.new().then(function(instance) {
-            return instance.storePart(id, name, batch, parentId).then(function(value) {
+            return instance.storePart(id, name, batch, subContracts, subIds).then(function(value) {
                 assert(value);
 
                 return instance.getPart(id).then(function(retrievedPart){
@@ -72,7 +95,7 @@ contract('FactoryParts', function(accounts) {
 
     it("mark part recalled as non-factory owner", function() {
         return factoryParts.new().then(function(instance) {
-            return instance.storePart(id, name, batch, parentId).then(function(value) {
+            return instance.storePart(id, name, batch, subContracts, subIds).then(function(value) {
 
                 return instance.getPart(id).then(function(retrievedPart){
                     assert(!retrievedPart[3]);
@@ -91,7 +114,7 @@ contract('FactoryParts', function(accounts) {
 
     it("change owner of a part", function() {
         return factoryParts.new().then(function(instance) {
-            return instance.storePart(id, name, batch, parentId).then(function(value) {
+            return instance.storePart(id, name, batch, subContracts, subIds).then(function(value) {
                 assert(value);
 
                 return instance.getPart(id).then(function(retrievedPart){
@@ -113,7 +136,7 @@ contract('FactoryParts', function(accounts) {
 
     it("change owner of a part as non-owner", function() {
         return factoryParts.new().then(function(instance) {
-            return instance.storePart(id, name, batch, parentId).then(function(value) {
+            return instance.storePart(id, name, batch, subContracts, subIds).then(function(value) {
                 assert(value);
 
                 return instance.getPart(id).then(function(retrievedPart) {
