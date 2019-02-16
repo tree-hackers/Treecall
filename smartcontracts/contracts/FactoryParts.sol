@@ -2,10 +2,11 @@ pragma solidity >=0.4.22 <0.6.0;
 pragma experimental ABIEncoderV2; // cannot return variable length objects or structs without this, remove when no longer experimental
 
 contract FactoryParts {
+    address factoryOwner;
+
     struct PartElement {
         string name;
         int batch;
-        string partId;
         address owner;
         bool recalled;
         string[] previousIds;
@@ -17,18 +18,23 @@ contract FactoryParts {
         address owner
     );
 
-    constructor() public {
+    event OwnerChanged(
+        string id,
+        address owner,
+        address newOwner
+    );
 
+    constructor() public {
+        factoryOwner = msg.sender;
     }
 
-    function storePart(string memory _id, string memory _name, int _batch, string memory _partId, address _owner, string[] memory _previousIds) 
-                            public returns(bool success) {      
+    function storePart(string memory _id, string memory _name, int _batch, string[] memory _previousIds) 
+                            public onlyOwner returns(bool success) {      
         PartElement memory part = partsList[_id];
 
         part.name = _name;
         part.batch = _batch;
-        part.partId = _partId;
-        part.owner = _owner;
+        part.owner = msg.sender;
         part.previousIds = _previousIds;
         part.recalled = false;
 
@@ -36,16 +42,42 @@ contract FactoryParts {
         return true;
     }
 
-    function markAsRecalled(string memory _id) public returns(bool success) {
+    function markAsRecalled(string memory _id) public onlyOwner returns(bool success) {
         PartElement memory part = partsList[_id];
         part.recalled = true;
         emit MarkedAsRecalled(_id, part.owner);
+        partsList[_id] = part;
 
         return true;
     }
 
-    function getPart(string memory _id) public view returns (string memory, int, string memory, address, bool, string[] memory) {
+    function changeOwner(string memory _id, address _newOwner) public returns(bool success) {
         PartElement memory part = partsList[_id];
-        return (part.name, part.batch, part.partId, part.owner, part.recalled, part.previousIds);
+        
+        require(
+            msg.sender == part.owner,
+            "Only part owner can call this function."
+        );
+
+        address oldOwner = part.owner;
+        part.owner = _newOwner;
+        partsList[_id] = part;
+
+        emit OwnerChanged(_id, oldOwner, _newOwner);
+        
+        return true;
+    }
+
+    function getPart(string memory _id) public view returns (string memory, int, address, bool, string[] memory) {
+        PartElement memory part = partsList[_id];
+        return (part.name, part.batch, part.owner, part.recalled, part.previousIds);
+    }
+
+    modifier onlyOwner {
+        require(
+            msg.sender == factoryOwner,
+            "Only factory owner can call this function."
+        );
+        _;
     }
 }
