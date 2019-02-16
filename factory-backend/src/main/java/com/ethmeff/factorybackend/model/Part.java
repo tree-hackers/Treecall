@@ -37,7 +37,7 @@ public class Part {
 		this.name = name;
 		this.batch = batch;
 		this.contractAddress = contractAddress;
-		this.partId = partId;
+		this.partId = partId == null || partId.isEmpty() ? UUID.randomUUID().toString() : partId;
 		this.isBroken = isBroken;
 	}
 

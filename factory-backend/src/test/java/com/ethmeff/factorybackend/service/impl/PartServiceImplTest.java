@@ -1,5 +1,6 @@
 package com.ethmeff.factorybackend.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class PartServiceImplTest extends TestBase implements PartService {
 		Part part = getTestPart();
 		part.setIsBroken(true);
 		return part;
+	}
+
+	@Override
+	public List<Part> getAllParts() {
+		return Arrays.asList(getTestPart());
 	}
 
 }

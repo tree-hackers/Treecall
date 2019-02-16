@@ -40,4 +40,9 @@ public class PartServiceImpl implements PartService {
 		Part part = repo.findById(id).orElseThrow(EntityNotFoundException::new);
 		return bcConnector.setBroken(part.getContractAddress(), part.getPartId());
 	}
+
+	@Override
+	public List<Part> getAllParts() {
+		return repo.findAll();
+	}
 }

@@ -3,6 +3,7 @@ package com.ethmeff.factorybackend;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,9 +27,12 @@ public class FactoryBackendApplication {
 		return new EthBCConnector();
 	}
 
+	@Autowired
+	private PartRepository repo;
+
 	@Bean
 	@Profile("daimler")
-	public CommandLineRunner demoDataDAG(PartRepository repo) {
+	public CommandLineRunner demoDataDAG() {
 		return args -> {
 			repo.saveAll(Arrays.asList(new Part("Headligths", new BigInteger("1"), "", "", false),
 					new Part("Breaks", new BigInteger("4"), "", "", false),
@@ -48,7 +52,7 @@ public class FactoryBackendApplication {
 
 	@Bean
 	@Profile("zf")
-	public CommandLineRunner demoDataZF(PartRepository repo) {
+	public CommandLineRunner demoDataZF() {
 		return args -> {
 			repo.saveAll(Arrays.asList(new Part("Headligths", new BigInteger("1"), "", "", false),
 					new Part("Break Disc", new BigInteger("7"), "", "", false),

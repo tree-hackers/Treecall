@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import com.ethmeff.factorybackend.service.impl.PartServiceImpl;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableAutoConfiguration
+@Transactional
 public class PartServiceTest extends TestBase {
 
 	@TestConfiguration
@@ -64,4 +67,10 @@ public class PartServiceTest extends TestBase {
 		assertThat(setBroken.getName()).isEqualTo(testPart.getName());
 	}
 
+	@Test
+	public void testGetAllParts() {
+		assertThat(service.getAllParts().size()).isEqualTo(0);
+		repo.save(getTestPart());
+		assertThat(service.getAllParts().size()).isEqualTo(1);
+	}
 }
