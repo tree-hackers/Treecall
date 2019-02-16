@@ -2,6 +2,7 @@ package com.ethmeff.factorybackend.blockchain.connector.impl.mock;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -33,6 +34,11 @@ public class MockBlockchainConnector implements BCConnector {
 
 	@Override
 	public void addSubParts(String contractAddress, String uuidParentPart, Part... parts) {
+	}
+
+	@Override
+	public boolean changeOwner(Map<Part, String> parts) throws Exception {
+		return true;
 	}
 
 }

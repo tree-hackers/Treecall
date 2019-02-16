@@ -2,6 +2,7 @@ package com.ethmeff.factorybackend.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class PartServiceImplTest extends TestBase implements PartService {
 	@Override
 	public List<Part> getAllParts() {
 		return Arrays.asList(getTestPart());
+	}
+
+	@Override
+	public boolean changeOwner(Map<Part, String> parts) throws Exception {
+		return true;
 	}
 
 }

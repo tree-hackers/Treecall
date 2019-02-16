@@ -2,12 +2,14 @@ package com.ethmeff.factorybackend.blockchain.connector.impl.eth;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
 import com.ethmeff.factorybackend.blockchain.contract.FactoryParts;
@@ -65,6 +67,22 @@ public class EthBCConnector implements BCConnector {
 
 	private FactoryParts findFactoryPartsByAddress(String contractAddress) {
 		return FactoryParts.load(contractAddress, web3j, getCredentials(), GAS_PRICE, gasLimit);
+	}
+
+	@Override
+	public boolean changeOwner(Map<Part, String> parts) throws Exception {
+		String address = "";
+		FactoryParts contract = null;
+		for (Part part : parts.keySet()) {
+			String contractAddress = part.getContractAddress();
+			if (!contractAddress.equalsIgnoreCase(address)) {
+				address = contractAddress;
+				contract = findFactoryPartsByAddress(address);
+			}
+			TransactionReceipt send = contract.changeOwner(part.getPartId(), parts.get(part)).send();
+			return new Boolean(send.getStatus());
+		}
+		return false;
 	}
 
 }

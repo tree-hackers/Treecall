@@ -1,6 +1,7 @@
 package com.ethmeff.factorybackend.blockchain.connector;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -15,4 +16,6 @@ public interface BCConnector {
 	public Part setBroken(String contractAddress, String uuid);
 
 	public void addSubParts(String contractAddress, String uuidParentPart, Part... parts);
+
+	boolean changeOwner(Map<Part, String> parts) throws Exception;
 }

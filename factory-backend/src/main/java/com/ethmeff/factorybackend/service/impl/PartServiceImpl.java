@@ -1,6 +1,7 @@
 package com.ethmeff.factorybackend.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -44,5 +45,9 @@ public class PartServiceImpl implements PartService {
 	@Override
 	public List<Part> getAllParts() {
 		return repo.findAll();
+	}
+
+	public boolean changeOwner(Map<Part, String> parts) throws Exception {
+		return bcConnector.changeOwner(parts);
 	}
 }

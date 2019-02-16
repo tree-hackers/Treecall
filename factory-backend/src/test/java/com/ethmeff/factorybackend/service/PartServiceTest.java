@@ -3,6 +3,7 @@ package com.ethmeff.factorybackend.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -72,5 +73,12 @@ public class PartServiceTest extends TestBase {
 		assertThat(service.getAllParts().size()).isEqualTo(0);
 		repo.save(getTestPart());
 		assertThat(service.getAllParts().size()).isEqualTo(1);
+	}
+
+	@Test
+	public void testChangeOwner() throws Exception {
+		HashMap<Part, String> hashMap = new HashMap<>();
+		hashMap.put(getTestPart(), "0x66d55007de7e8cb7a1aad39c7d2cc798329f9374");
+		assertThat(service.changeOwner(hashMap)).isTrue();
 	}
 }
