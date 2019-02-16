@@ -1,9 +1,7 @@
 package com.ethmeff.factorybackend.blockchain.connector.impl.mock;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -28,8 +26,8 @@ public class MockBlockchainConnector implements BCConnector {
 	}
 
 	@Override
-	public Part setBroken(String contractAddress, String uuid) {
-		return new Part("Klimaanlage", new BigInteger("1"), CONTRACT_ADDRESS, UUID.randomUUID().toString(), true);
+	public boolean setBroken(String contractAddress, String uuid) {
+		return true;
 	}
 
 	@Override

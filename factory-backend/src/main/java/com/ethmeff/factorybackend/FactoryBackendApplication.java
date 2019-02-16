@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +29,8 @@ public class FactoryBackendApplication {
 	private PartRepository repo;
 	@Autowired
 	private BCConnector bcConnector;
+	@Value("${privatekey}")
+	private String privatekey;
 
 	@Bean
 	@Profile("daimler")
@@ -49,6 +52,11 @@ public class FactoryBackendApplication {
 					new Part("Headlight", new BigInteger("94"), address, "", false));
 			bcConnector.addParts(asList);
 			repo.saveAll(asList);
+
+			Map<Part, String> changeOwnerMap = new HashMap<Part, String>();
+			asList.forEach(it -> changeOwnerMap.put(it, "0x830a8cd285d14925e531ee143574c72c00db6411"));
+
+			bcConnector.changeOwner(changeOwnerMap);
 		};
 	}
 

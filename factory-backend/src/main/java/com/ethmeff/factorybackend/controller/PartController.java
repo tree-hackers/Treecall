@@ -33,7 +33,7 @@ public class PartController {
 	}
 
 	@PutMapping(path = "/set-broken/{id}")
-	public ResponseEntity<Part> setBroken(@PathVariable("id") Long id) throws Exception {
+	public ResponseEntity<Boolean> setBroken(@PathVariable("id") Long id) throws Exception {
 		return ResponseEntity.ok(service.setBroken(id));
 	}
 

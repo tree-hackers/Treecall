@@ -37,7 +37,7 @@ public class PartServiceImpl implements PartService {
 	}
 
 	@Override
-	public Part setBroken(Long id) throws Exception {
+	public boolean setBroken(Long id) throws Exception {
 		Part part = repo.findById(id).orElseThrow(EntityNotFoundException::new);
 		return bcConnector.setBroken(part.getContractAddress(), part.getPartId());
 	}

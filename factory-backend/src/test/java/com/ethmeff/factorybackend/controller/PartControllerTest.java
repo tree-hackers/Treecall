@@ -1,5 +1,6 @@
 package com.ethmeff.factorybackend.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -70,7 +71,7 @@ public class PartControllerTest extends TestBase {
 	@Test
 	public void testPutBroken() throws Exception {
 		ResultActions resultActions = mvc.perform(put("/set-broken/1"));
-		checkIsTestPartJson(resultActions, true);
+		assertThat(resultActions.andReturn().getResponse().getContentAsString()).isEqualTo("true");
 	}
 
 	@Test(expected = Exception.class)

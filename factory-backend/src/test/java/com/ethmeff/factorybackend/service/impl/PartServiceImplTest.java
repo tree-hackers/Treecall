@@ -21,13 +21,13 @@ public class PartServiceImplTest extends TestBase implements PartService {
 	}
 
 	@Override
-	public Part setBroken(Long id) throws Exception {
+	public boolean setBroken(Long id) throws Exception {
 		if (id == 0) {
 			throw new Exception();
 		}
 		Part part = getTestPart();
 		part.setIsBroken(true);
-		return part;
+		return true;
 	}
 
 	@Override

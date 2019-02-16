@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
@@ -46,14 +47,18 @@ public class EthBCConnector implements BCConnector {
 				contractAddress = savedContractAddress;
 				foundParts = findFactoryPartsByAddress(contractAddress);
 			}
-			foundParts.storePart(part.getPartId(), part.getName(), part.getBatch(), part.getSubPartListAsString());
+			RemoteCall<TransactionReceipt> storePart = foundParts.storePart(part.getPartId(), part.getName(),
+					part.getBatch(), part.getSubPartsContracts(), part.getSubPartsUUID());
+			String status = storePart.send().getStatus();
+			if (!status.equalsIgnoreCase("0x1"))
+				throw new Exception();
 		}
 	}
 
 	@Override
-	public Part setBroken(String contractAddress, String uuid) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean setBroken(String contractAddress, String uuid) throws Exception {
+		String status = findFactoryPartsByAddress(contractAddress).markAsRecalled(uuid).send().getStatus();
+		return status.equalsIgnoreCase("0x1");
 	}
 
 	@Override

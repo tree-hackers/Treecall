@@ -63,9 +63,8 @@ public class PartServiceTest extends TestBase {
 	public void testSetBroken() throws Exception {
 		Part testPart = getTestPart();
 		Part part = repo.save(testPart);
-		Part setBroken = service.setBroken(part.getId());
-		assertThat(setBroken.getIsBroken()).isTrue();
-		assertThat(setBroken.getName()).isEqualTo(testPart.getName());
+		boolean setBroken = service.setBroken(part.getId());
+		assertThat(setBroken).isTrue();
 	}
 
 	@Test

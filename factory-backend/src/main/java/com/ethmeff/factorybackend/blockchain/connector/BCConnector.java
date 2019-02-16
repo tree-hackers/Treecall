@@ -13,7 +13,7 @@ public interface BCConnector {
 
 	public void addParts(List<Part> part) throws Exception;
 
-	public Part setBroken(String contractAddress, String uuid);
+	public boolean setBroken(String contractAddress, String uuid) throws Exception;
 
 	public void addSubParts(String contractAddress, String uuidParentPart, Part... parts);
 

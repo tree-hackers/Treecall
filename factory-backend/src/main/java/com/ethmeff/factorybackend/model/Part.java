@@ -1,20 +1,16 @@
 package com.ethmeff.factorybackend.model;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -28,8 +24,10 @@ public class Part {
 	private String contractAddress;
 	private String partId;
 	private Boolean isBroken;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<SubPart> subParts = Arrays.asList(new SubPart("123123", UUID.randomUUID()));
+	@ElementCollection
+	private List<String> subPartsContracts = Arrays.asList("0x0");
+	@ElementCollection
+	private List<String> subPartsUUID = Arrays.asList("");
 
 	public Part() {
 	}
@@ -90,30 +88,27 @@ public class Part {
 		this.isBroken = isBroken;
 	}
 
-	public List<SubPart> getSubParts() {
-		return subParts;
+	public List<String> getSubPartsContracts() {
+		return subPartsContracts;
 	}
 
-	@JsonIgnore
-	public List<String> getSubPartListAsString() {
-		if (!subParts.isEmpty()) {
-			List<String> result = new ArrayList<>();
-			for (SubPart subPart : subParts) {
-				result.add(subPart.toString());
-			}
-			return result;
-		} else {
-			return Collections.<String>emptyList();
-		}
+	public void setSubPartsContracts(List<String> subPartsContracts) {
+		this.subPartsContracts = subPartsContracts;
 	}
 
-	public void setSubParts(List<SubPart> subParts) {
-		this.subParts = subParts;
+	public List<String> getSubPartsUUID() {
+		return subPartsUUID;
+	}
+
+	public void setSubPartsUUID(List<String> subPartsUUID) {
+		this.subPartsUUID = subPartsUUID;
 	}
 
 	@Override
 	public String toString() {
 		return "Part [id=" + id + ", name=" + name + ", batch=" + batch + ", contractAddress=" + contractAddress
-				+ ", partId=" + partId + ", isBroken=" + isBroken + ", subParts=" + subParts + "]";
+				+ ", partId=" + partId + ", isBroken=" + isBroken + ", subPartsContracts=" + subPartsContracts
+				+ ", subPartsUUID=" + subPartsUUID + "]";
 	}
+
 }
