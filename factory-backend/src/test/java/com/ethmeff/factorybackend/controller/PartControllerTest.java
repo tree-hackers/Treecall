@@ -1,6 +1,10 @@
 package com.ethmeff.factorybackend.controller;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -18,6 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.ethmeff.factorybackend.TestBase;
+import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
+import com.ethmeff.factorybackend.blockchain.connector.impl.mock.MockBlockchainConnector;
 import com.ethmeff.factorybackend.model.Part;
 import com.ethmeff.factorybackend.service.PartService;
 import com.ethmeff.factorybackend.service.impl.PartServiceImplTest;
@@ -36,6 +42,11 @@ public class PartControllerTest extends TestBase {
 		public PartService partService() {
 			return new PartServiceImplTest();
 		}
+
+		@Bean
+		public BCConnector bcConnector() {
+			return new MockBlockchainConnector();
+		}
 	}
 
 	@Test
@@ -50,6 +61,18 @@ public class PartControllerTest extends TestBase {
 	public void testAddPartsException() throws Exception {
 		mvc.perform(post("/").content("[]").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(status().isCreated());
+	}
+
+	@Test
+	public void testPutBroken() throws Exception {
+		mvc.perform(put("/set-broken/1")).andExpect(status().isOk()).andExpect(jsonPath("$.name", is("Klimaanlage")))
+				.andExpect(jsonPath("$.batch", is(1))).andExpect(jsonPath("$.contractAddress", is("")))
+				.andExpect(jsonPath("$.isBroken", is(true))).andDo(print());
+	}
+
+	@Test(expected = Exception.class)
+	public void testExceptionPutBroken() throws Exception {
+		mvc.perform(put("/set-broken/0")).andExpect(status().is5xxServerError());
 	}
 
 }

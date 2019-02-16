@@ -1,0 +1,1 @@
+xcopy ..\build\compiled\FileToken.json ..\..\frontend\web-client\src\contract /q /y
