@@ -49,14 +49,14 @@ export class PartTableComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  click(data) {
-    this.openDialog(data);
+  click(val) {
+    this.openDialog(val);
   }
 
-  openDialog(data): void {
+  openDialog(val): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: { data }
+      data: { val }
     });
 
     dialogRef.afterClosed().subscribe(result => {
