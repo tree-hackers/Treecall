@@ -32,15 +32,3 @@ spring:
 server:
   port: 8081
 privatekey: 733e0a723baab4e243a27c07675263a7f3d834e67aa89dd70864050575aef830
----
-spring:
-  profiles: car1
-privatekey: 59ebad101bd980ae11b2879bc7b07274a8f049e6bd75769736e4d34d93a17b7a
----
-spring:
-  profiles: car2
-privatekey: e8e43fec0831140067e0b9fe662b4a9069976dd49218d91f64b2e477cbd37575
----
-spring:
-  profiles: car3
-privatekey: 59ebad101bd980ae11b2879bc7b07274a8f049e6bd75769736e4d34d93a17b7a

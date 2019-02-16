@@ -2,7 +2,9 @@ package com.ethmeff.factorybackend;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -60,7 +62,11 @@ public class FactoryBackendApplication {
 					new Part("Break Pipes", new BigInteger("3"), "", "", false));
 			bcConnector.addParts(asList);
 			repo.saveAll(asList);
+
+			Map<Part, String> changeOwnerMap = new HashMap<Part, String>();
+			asList.forEach(it -> changeOwnerMap.put(it, "0x830a8cd285d14925e531ee143574c72c00db6411"));
+
+			bcConnector.changeOwner(changeOwnerMap);
 		};
 	}
-
 }
