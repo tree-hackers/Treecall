@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -93,6 +94,7 @@ public class Part {
 		return subParts;
 	}
 
+	@JsonIgnore
 	public List<String> getSubPartListAsString() {
 		if (!subParts.isEmpty()) {
 			List<String> result = new ArrayList<>();
