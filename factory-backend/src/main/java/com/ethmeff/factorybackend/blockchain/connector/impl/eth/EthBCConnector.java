@@ -1,6 +1,7 @@
 package com.ethmeff.factorybackend.blockchain.connector.impl.eth;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tuples.generated.Tuple6;
 
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
 import com.ethmeff.factorybackend.blockchain.contract.FactoryParts;
@@ -89,6 +91,18 @@ public class EthBCConnector implements BCConnector {
 			return new Boolean(send.getStatus());
 		}
 		return false;
+	}
+
+	@Override
+	public List<Part> getAllTokens(List<Part> findAll) throws Exception {
+		List<Part> result = new ArrayList<Part>();
+		for (Part part : findAll) {
+			FactoryParts contract = findFactoryPartsByAddress(part.getContractAddress());
+			Tuple6<String, BigInteger, String, Boolean, List<String>, List<String>> foundPart = contract
+					.getPart(part.getPartId()).send();
+			result.add(new Part(part.getId(), part.getPartId(), foundPart));
+		}
+		return result;
 	}
 
 }

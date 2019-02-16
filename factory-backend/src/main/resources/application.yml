@@ -31,3 +31,18 @@ spring:
 server:
   port: 8081
 privatekey: 733e0a723baab4e243a27c07675263a7f3d834e67aa89dd70864050575aef830
+---
+spring:
+  profiles: car
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:car
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+server:
+  port: 8082
+privatekey: 560c467a75a565e293cb0a3ae3543242e9e8b7c3e9b901643874038e9e5b2b49

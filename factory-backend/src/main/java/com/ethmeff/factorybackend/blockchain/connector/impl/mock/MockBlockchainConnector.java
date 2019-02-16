@@ -1,7 +1,11 @@
 package com.ethmeff.factorybackend.blockchain.connector.impl.mock;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -37,6 +41,13 @@ public class MockBlockchainConnector implements BCConnector {
 	@Override
 	public boolean changeOwner(Map<Part, String> parts) throws Exception {
 		return true;
+	}
+
+	@Override
+	public List<Part> getAllTokens(List<Part> findAll) {
+		if (findAll.isEmpty())
+			return Collections.EMPTY_LIST;
+		return Arrays.asList(new Part("Klimaanlage", new BigInteger("1"), "", UUID.randomUUID().toString(), false));
 	}
 
 }

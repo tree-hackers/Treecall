@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.web3j.tuples.generated.Tuple6;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -38,6 +40,18 @@ public class Part {
 		this.contractAddress = contractAddress;
 		this.partId = partId == null || partId.isEmpty() ? UUID.randomUUID().toString() : partId;
 		this.isBroken = isBroken;
+	}
+
+	public Part(Long id, String partId,
+			Tuple6<String, BigInteger, String, Boolean, List<String>, List<String>> foundPart) {
+		this.id = id;
+		this.name = foundPart.getValue1();
+		this.batch = foundPart.getValue2();
+		this.isBroken = foundPart.getValue4();
+		this.subPartsContracts = foundPart.getValue5();
+		this.partId = partId;
+		this.subPartsUUID = foundPart.getValue6();
+
 	}
 
 	public Long getId() {

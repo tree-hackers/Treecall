@@ -6,13 +6,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,9 +23,8 @@ import com.ethmeff.factorybackend.repository.PartRepository;
 import com.ethmeff.factorybackend.service.impl.PartServiceImpl;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 @EnableAutoConfiguration
-@Transactional
+@DataJpaTest
 public class PartServiceTest extends TestBase {
 
 	@TestConfiguration
@@ -68,7 +65,7 @@ public class PartServiceTest extends TestBase {
 	}
 
 	@Test
-	public void testGetAllParts() {
+	public void testGetAllParts() throws Exception {
 		assertThat(service.getAllParts().size()).isEqualTo(0);
 		repo.save(getTestPart());
 		assertThat(service.getAllParts().size()).isEqualTo(1);
@@ -79,5 +76,13 @@ public class PartServiceTest extends TestBase {
 		HashMap<Part, String> hashMap = new HashMap<>();
 		hashMap.put(getTestPart(), "0x66d55007de7e8cb7a1aad39c7d2cc798329f9374");
 		assertThat(service.changeOwner(hashMap)).isTrue();
+	}
+
+	@Test
+	public void testGetPartInfos() throws Exception {
+		Part part = getTestPart();
+		part = repo.save(part);
+		Part result = service.getPartInfo(part.getId());
+		isTestPart(result);
 	}
 }

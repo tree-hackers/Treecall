@@ -10,7 +10,9 @@ public interface PartService {
 
 	public boolean setBroken(Long id) throws Exception;
 
-	public List<Part> getAllParts();
+	public List<Part> getAllParts() throws Exception;
 
 	public boolean changeOwner(Map<Part, String> parts) throws Exception;
+
+	public Part getPartInfo(Long id) throws Exception;
 }

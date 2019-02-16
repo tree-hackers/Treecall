@@ -44,7 +44,12 @@ public class PartController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Part>> getOwnParts() {
+	public ResponseEntity<List<Part>> getOwnParts() throws Exception {
 		return ResponseEntity.ok(service.getAllParts());
+	}
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<Part> getPartInfo(@PathVariable("id") Long id) throws Exception {
+		return ResponseEntity.ok(service.getPartInfo(id));
 	}
 }

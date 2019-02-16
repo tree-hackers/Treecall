@@ -1,8 +1,10 @@
 package com.ethmeff.factorybackend.service.impl;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,11 @@ public class PartServiceImplTest extends TestBase implements PartService {
 	@Override
 	public boolean changeOwner(Map<Part, String> parts) throws Exception {
 		return true;
+	}
+
+	@Override
+	public Part getPartInfo(Long id) throws Exception {
+		return new Part("Klimaanlage", new BigInteger("1"), "", UUID.randomUUID().toString(), false);
 	}
 
 }

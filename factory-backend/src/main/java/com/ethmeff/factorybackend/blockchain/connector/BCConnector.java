@@ -18,4 +18,6 @@ public interface BCConnector {
 	public void addSubParts(String contractAddress, String uuidParentPart, Part... parts);
 
 	boolean changeOwner(Map<Part, String> parts) throws Exception;
+
+	public List<Part> getAllTokens(List<Part> findAll) throws Exception;
 }
