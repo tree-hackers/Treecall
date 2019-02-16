@@ -20,7 +20,7 @@ export class PartTableService {
   }
 
   setBroken(part): Observable<any> {
-    return this._http.post<any>(this.url + '/set-broken/' + part, '');
+    return this._http.put<any>(this.url + '/set-broken/' + part, '');
   }
 
   parsePart(json: any): iPart {

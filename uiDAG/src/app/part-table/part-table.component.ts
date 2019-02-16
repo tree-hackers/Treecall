@@ -43,9 +43,10 @@ export class PartTableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         this._partTableService.setBroken(result.val.id).subscribe((res) => {
+          console.log(res);
+
         });
       }
     });
