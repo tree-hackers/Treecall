@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.ethmeff.factorybackend.model.Part;
+import com.ethmeff.factorybackend.model.PartTree;
 
 @Component
 public interface BCConnector {
@@ -17,7 +18,7 @@ public interface BCConnector {
 
 	public void addSubParts(String contractAddress, String uuidParentPart, Part... parts);
 
-	boolean changeOwner(Map<Part, String> parts) throws Exception;
+	public boolean changeOwner(Map<Part, String> parts) throws Exception;
 
-	public List<Part> getAllTokens(List<Part> findAll) throws Exception;
+	public PartTree getAllOwnParts(Part part) throws Exception;
 }

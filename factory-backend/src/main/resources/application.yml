@@ -2,6 +2,10 @@ web3j:
   client-address: http://localhost:9545
   http-timeout-seconds: 600
 gaslimit: 4700000
+daimler:
+  contract:
+    address: 0x284c5966270565c0d327c67c2d9708966fb83772
+---
 privatekey: 9a5711d5335f1bf0cf88625438dfb07af79ad0aa7d22fec551818788d67f2a4a
 server:
   port: 8080

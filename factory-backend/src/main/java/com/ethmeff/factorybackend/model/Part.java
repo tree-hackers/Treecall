@@ -3,7 +3,6 @@ package com.ethmeff.factorybackend.model;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -23,7 +22,7 @@ public class Part {
 	private Long id;
 	private String name;
 	private BigInteger batch;
-	private String contractAddress;
+	private String contractAddress = "";
 	private String partId;
 	private Boolean isBroken;
 	@ElementCollection
@@ -34,12 +33,13 @@ public class Part {
 	public Part() {
 	}
 
-	public Part(String name, BigInteger batch, String contractAddress, String partId, Boolean isBroken) {
+	public Part(String name, BigInteger batch, String partId, Boolean isBroken, List<String> subPartsUUID) {
+		super();
 		this.name = name;
 		this.batch = batch;
-		this.contractAddress = contractAddress;
-		this.partId = partId == null || partId.isEmpty() ? UUID.randomUUID().toString() : partId;
+		this.partId = partId;
 		this.isBroken = isBroken;
+		this.subPartsUUID = subPartsUUID;
 	}
 
 	public Part(Long id, String partId,
@@ -52,6 +52,11 @@ public class Part {
 		this.partId = partId;
 		this.subPartsUUID = foundPart.getValue6();
 
+	}
+
+	public Part(String contractAddress, String partID) {
+		this.contractAddress = contractAddress;
+		this.partId = partID;
 	}
 
 	public Long getId() {
@@ -84,6 +89,11 @@ public class Part {
 
 	public void setContractAddress(String contractAddress) {
 		this.contractAddress = contractAddress;
+	}
+
+	public Part withContractAddress(String contractAddress) {
+		this.contractAddress = contractAddress;
+		return this;
 	}
 
 	public String getPartId() {

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ethmeff.factorybackend.model.Part;
+import com.ethmeff.factorybackend.model.PartTree;
 import com.ethmeff.factorybackend.service.PartService;
 
 @RestController
@@ -44,7 +45,7 @@ public class PartController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Part>> getOwnParts() throws Exception {
+	public ResponseEntity<List<PartTree>> getOwnParts() throws Exception {
 		return ResponseEntity.ok(service.getAllParts());
 	}
 

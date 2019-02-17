@@ -1,18 +1,17 @@
 package com.ethmeff.factorybackend.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
 import com.ethmeff.factorybackend.model.Part;
+import com.ethmeff.factorybackend.model.PartTree;
 import com.ethmeff.factorybackend.repository.PartRepository;
 import com.ethmeff.factorybackend.service.PartService;
 
@@ -24,16 +23,6 @@ public class PartServiceImpl implements PartService {
 	private PartRepository repo;
 
 	public void addPart(List<Part> parts) throws Exception {
-		String contractAddress = null;
-		if (repo.count() == 0) {
-			contractAddress = bcConnector.deploy();
-		}
-		for (Part part : parts) {
-			if (contractAddress != null) {
-				part.setContractAddress(contractAddress);
-			}
-			part.setPartId(UUID.randomUUID().toString());
-		}
 		bcConnector.addParts(parts);
 		repo.saveAll(parts);
 	}
@@ -45,9 +34,13 @@ public class PartServiceImpl implements PartService {
 	}
 
 	@Override
-	public List<Part> getAllParts() throws Exception {
+	public List<PartTree> getAllParts() throws Exception {
+		List<PartTree> partTrees = new ArrayList<>();
 		List<Part> findAll = repo.findAll();
-		return bcConnector.getAllTokens(findAll);
+		for (Part part : findAll) {
+			partTrees.add(bcConnector.getAllOwnParts(part));
+		}
+		return partTrees;
 	}
 
 	@Override
@@ -58,8 +51,7 @@ public class PartServiceImpl implements PartService {
 	@Override
 	public Part getPartInfo(Long id) throws Exception {
 		Part part = repo.findById(id).orElseThrow(EntityNotFoundException::new);
-		List<Part> allTokens = bcConnector.getAllTokens(Arrays.asList(part));
-		Assert.notNull(allTokens, "should not be null");
-		return allTokens.get(0);
+		PartTree allOwnParts = bcConnector.getAllOwnParts(part);
+		return allOwnParts.getPart();
 	}
 }

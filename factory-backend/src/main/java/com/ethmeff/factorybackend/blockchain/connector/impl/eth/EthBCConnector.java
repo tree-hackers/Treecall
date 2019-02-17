@@ -1,7 +1,6 @@
 package com.ethmeff.factorybackend.blockchain.connector.impl.eth;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.web3j.tuples.generated.Tuple6;
 import com.ethmeff.factorybackend.blockchain.connector.BCConnector;
 import com.ethmeff.factorybackend.blockchain.contract.FactoryParts;
 import com.ethmeff.factorybackend.model.Part;
+import com.ethmeff.factorybackend.model.PartTree;
 
 @Component
 public class EthBCConnector implements BCConnector {
@@ -44,8 +44,7 @@ public class EthBCConnector implements BCConnector {
 		FactoryParts foundParts = null;
 		for (Part part : parts) {
 			String savedContractAddress = part.getContractAddress();
-			if (!contractAddress.equalsIgnoreCase(savedContractAddress) || savedContractAddress == null
-					|| savedContractAddress.isEmpty()) {
+			if (isNewContractAddress(contractAddress, savedContractAddress)) {
 				contractAddress = savedContractAddress;
 				foundParts = findFactoryPartsByAddress(contractAddress);
 			}
@@ -55,6 +54,11 @@ public class EthBCConnector implements BCConnector {
 			if (!status.equalsIgnoreCase("0x1"))
 				throw new Exception();
 		}
+	}
+
+	private boolean isNewContractAddress(String contractAddress, String savedContractAddress) {
+		return !contractAddress.equalsIgnoreCase(savedContractAddress) || savedContractAddress == null
+				|| savedContractAddress.isEmpty();
 	}
 
 	@Override
@@ -94,15 +98,28 @@ public class EthBCConnector implements BCConnector {
 	}
 
 	@Override
-	public List<Part> getAllTokens(List<Part> findAll) throws Exception {
-		List<Part> result = new ArrayList<Part>();
-		for (Part part : findAll) {
-			FactoryParts contract = findFactoryPartsByAddress(part.getContractAddress());
-			Tuple6<String, BigInteger, String, Boolean, List<String>, List<String>> foundPart = contract
-					.getPart(part.getPartId()).send();
-			result.add(new Part(part.getId(), part.getPartId(), foundPart));
+	public PartTree getAllOwnParts(Part part) throws Exception {
+		PartTree result = new PartTree();
+
+		Part foundPart = new Part(part.getId(), part.getPartId(),
+				findWithContractAddressAndPartID(part.getContractAddress(), part.getPartId()));
+		List<String> subPartsContracts = foundPart.getSubPartsContracts();
+		List<String> subPartsUUID = foundPart.getSubPartsUUID();
+
+		for (int i = 0; i < subPartsContracts.size(); i++) {
+			PartTree recurs = getAllOwnParts(new Part(subPartsContracts.get(i), subPartsUUID.get(i)));
+			result.addToPartTrees(recurs);
 		}
+		result.setPart(foundPart);
 		return result;
+	}
+
+	private Tuple6<String, BigInteger, String, Boolean, List<String>, List<String>> findWithContractAddressAndPartID(
+			String contractAddress, String partID) throws Exception {
+		FactoryParts contract = findFactoryPartsByAddress(contractAddress);
+		Tuple6<String, BigInteger, String, Boolean, List<String>, List<String>> foundPart = contract.getPart(partID)
+				.send();
+		return foundPart;
 	}
 
 }

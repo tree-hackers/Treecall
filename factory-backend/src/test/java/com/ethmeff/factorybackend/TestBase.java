@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.UUID;
 
 import org.springframework.test.web.servlet.ResultActions;
@@ -17,7 +18,7 @@ public class TestBase {
 	protected static final String KLIMAANLAGE = "Klimaanlage";
 
 	protected Part getTestPart() {
-		return new Part(KLIMAANLAGE, new BigInteger("1"), "", UUID.randomUUID().toString(), false);
+		return new Part(KLIMAANLAGE, new BigInteger("1"), UUID.randomUUID().toString(), false, Collections.EMPTY_LIST);
 	}
 
 	protected void isTestPart(Part savePart) {
