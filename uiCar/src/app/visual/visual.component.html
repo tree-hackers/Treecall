@@ -4,8 +4,8 @@
             <div *ngSwitchCase="'headlights'">
                 One of your headlights seems to have a problem, please visit a workshop soon!
             </div>
-            <div *ngSwitchCase="'break'">
-                One of your breaks seems to have a problem, please visit a workshop soon!
+            <div *ngSwitchCase="'brake'">
+                One of your brake seems to have a problem, please visit a workshop soon!
             </div>
             <div *ngSwitchCase="'airbags'">
                 Your front airbags seems to have a problem, please visit a workshop soon!
@@ -21,10 +21,10 @@
 
     <span [ngSwitch]="part">
         <div *ngSwitchCase="'headlights'">
-            <img class="image" src="/assets/car_headlights.png">
+            <img class="image" src="/assets/ca r_headlights.png">
         </div>
-        <div *ngSwitchCase="'break'">
-            <img class="image" src="/assets/car_break.png">
+        <div *ngSwitchCase="'brake'">
+            <img class="image" src="/assets/car_brake.png">
         </div>
         <div *ngSwitchCase="'airbags'">
             <img class="image" src="/assets/car_airbags.png">

@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 const apiServer = {
-  url: 'url'
-}
+  // url: 'http://10.0.4.163:8082 ' //frido
+  url: 'http://10.0.3.1:8082' //fatih
+};
 
 export const environment = {
   production: false,

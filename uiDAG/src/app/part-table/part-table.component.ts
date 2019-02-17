@@ -10,7 +10,7 @@ import { PartTableService } from './part-table.service';
 })
 
 export class PartTableComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'batch'];
+  displayedColumns: string[] = ['partId', 'name', 'batch'];
   dataSource;
   constructor(
     public dialog: MatDialog,
@@ -26,11 +26,11 @@ export class PartTableComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
+  // applyFilter(filterValue: string) {
+  //   filterValue = filterValue.trim(); // Remove whitespace
+  //   filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+  //   this.dataSource.filter = filterValue;
+  // }
 
   click(val) {
     this.openDialog(val);
@@ -43,6 +43,7 @@ export class PartTableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
       if (result) {
         this._partTableService.setBroken(result.val.id).subscribe((res) => {
           console.log(res);

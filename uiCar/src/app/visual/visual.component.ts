@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './visual.component.html',
   styleUrls: ['./visual.component.scss']
 })
+
 export class VisualComponent implements OnInit {
   part;
   constructor(
@@ -20,6 +21,7 @@ export class VisualComponent implements OnInit {
 
   refreshData() {
     this._httpService.getParts().subscribe((res) => {
+      console.log(res)
       for (let i = 0; i < res.length; i++) {
         if (res[i].isBroken) {
           this.part = res[i].name;

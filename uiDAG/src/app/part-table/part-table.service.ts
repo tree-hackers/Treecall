@@ -22,15 +22,15 @@ export class PartTableService {
   setBroken(part): Observable<any> {
     return this._http.put<any>(this.url + '/set-broken/' + part, '');
   }
-
+  
   parsePart(json: any): iPart {
     const part: iPart = <iPart>json;
     return part;
   }
-
+  
   convertParts(res): Array<iPart> {
     const parts: Array<iPart> = [];
-    for (let i = 0; i < res.length; i++) {
+      for (let i = 0; i < res.length; i++) {
       const part: iPart = this.parsePart(res[i]);
       parts.push(part);
     }

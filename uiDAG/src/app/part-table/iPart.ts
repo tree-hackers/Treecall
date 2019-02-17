@@ -4,7 +4,7 @@ export interface iPart {
     batch: number;
     isBroken: boolean;
     // contractAddress: string;
-    // partId: string;
+    partId: string;
     // subPartListAsString: any;
     // subParts: any;
 }
